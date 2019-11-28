@@ -6,6 +6,7 @@ import os
 from common.mongo.controller import MongoController
 from flask_jwt_extended import JWTManager
 from flask import Flask
+from flask_cors import CORS
 
 # Construct mongo controller
 MONGO_CONTROLLER = MongoController()
@@ -14,6 +15,8 @@ from api.enpoints.keyword import keyword_blueprint
 from api.enpoints.user import user_blueprint
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Set JWT secret key
 JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
