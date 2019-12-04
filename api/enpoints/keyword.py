@@ -4,6 +4,7 @@ This module holds all the endpoints associated to keyword manipulation
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, jsonify
 from bson import json_util
+from common.config import SUPPORTED_LANGUAGES
 
 import json
 
@@ -83,3 +84,15 @@ def keyword_route(_id):
             return json_util.dumps(keyword) # Successful
         except:
             return { 'msg': 'the request encountered an error' }, 400 # Bad reqeust
+
+@keyword_blueprint.route('/keywords/languages/available', methods=["GET"])
+@jwt_required
+def keyword_languages_available_route():
+    """
+    Return the currently supported languages of the system
+
+    GET: supported languages
+    """
+    if request.method == "GET":
+        return jsonify(SUPPORTED_LANGUAGES)
+            
