@@ -8,7 +8,7 @@ from common.config import SUPPORTED_LANGUAGES
 
 import json
 
-from server import MONGO_CONTROLLER
+from server import MONGO_CONTROLLER, celery_app
 
 # Set up blueprint
 keyword_blueprint = Blueprint('keyword_endpoint', __name__)
@@ -43,11 +43,14 @@ def keywords_route():
     # Add keyword
     elif request.method == 'POST':
         # Get transmitted parameters
-        keyword = request.json.get('keyword', None)
+        keyword_string = request.json.get('keyword', None)
         language = request.json.get('language', None)
 
         try:
-            MONGO_CONTROLLER.add_keyword(keyword, language, username)
+            MONGO_CONTROLLER.add_keyword(keyword_string, language, username)
+
+            if keyword_string and language:
+                celery_app.send_task('crawl-twitter-keyword', kwargs={'keyword_string': keyword_string, 'language': language})
 
             return { 'msg': 'keyword successfully added' }, 200 # Successful
         except:
