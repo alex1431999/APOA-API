@@ -4,6 +4,7 @@ This module holds all the endpoints associated to keyword manipulation
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, jsonify
 from bson import json_util
+from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
 
 import json
@@ -50,7 +51,7 @@ def keywords_route():
             MONGO_CONTROLLER.add_keyword(keyword_string, language, username)
 
             if keyword_string and language:
-                celery_app.send_task('crawl-twitter-keyword', kwargs={'keyword_string': keyword_string, 'language': language})
+                celery_app.send_task('crawl-twitter-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['twitter'])
 
             return { 'msg': 'keyword successfully added' }, 200 # Successful
         except:

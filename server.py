@@ -13,7 +13,7 @@ from flask_cors import CORS
 MONGO_CONTROLLER = MongoController()
 
 # Setup celery
-celery_app = Celery('tasks',
+celery_app = Celery('server',
     broker = os.environ['BROKER_URL']
 )
 
