@@ -19,6 +19,7 @@ celery_app = Celery('server',
 
 from api.enpoints.keyword import keyword_blueprint
 from api.enpoints.user import user_blueprint
+from api.enpoints.crawls import crawls_enpoint
 
 app = Flask(__name__)
 
@@ -34,4 +35,5 @@ jwt = JWTManager(app)
 # Register blueprints
 app.register_blueprint(keyword_blueprint)
 app.register_blueprint(user_blueprint)
+app.register_blueprint(crawls_enpoint)
 
