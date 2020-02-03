@@ -10,6 +10,7 @@ from common.config import SUPPORTED_LANGUAGES
 import json
 
 from server import MONGO_CONTROLLER, celery_app
+from api.helpers.verification import verify_keyword_association
 
 # Set up blueprint
 keyword_blueprint = Blueprint('keyword_endpoint', __name__)
@@ -99,4 +100,10 @@ def keyword_languages_available_route():
     """
     if request.method == "GET":
         return jsonify(SUPPORTED_LANGUAGES)
+
+@keyword_blueprint.route('/keywords/<_id>/graph/entities')
+@jwt_required
+@verify_keyword_association(id_parameter_name='_id')
+def keyword_graph_entities(_id):
+    return jsonify(_id)
             
