@@ -105,5 +105,8 @@ def keyword_languages_available_route():
 @jwt_required
 @verify_keyword_association(id_parameter_name='_id')
 def keyword_graph_entities(_id):
+    """
+    TODO: Fetch the entity data from Neo4j and return in a readable format
+    """
     return jsonify(_id)
             
