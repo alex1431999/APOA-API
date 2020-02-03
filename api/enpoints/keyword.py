@@ -1,15 +1,15 @@
 """
 This module holds all the endpoints associated to keyword manipulation
 """
+import json
+
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, jsonify
 from bson import json_util
 from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
 
-import json
-
-from server import MONGO_CONTROLLER, celery_app
+from server import MONGO_CONTROLLER, NEO_CONTROLLER, celery_app
 from api.helpers.verification import verify_keyword_association
 
 # Set up blueprint
@@ -101,12 +101,26 @@ def keyword_languages_available_route():
     if request.method == "GET":
         return jsonify(SUPPORTED_LANGUAGES)
 
-@keyword_blueprint.route('/keywords/<_id>/graph/entities')
+@keyword_blueprint.route('/keywords/<_id>/graph/entities', methods=['GET'])
 @jwt_required
 @verify_keyword_association(id_parameter_name='_id')
 def keyword_graph_entities(_id):
     """
-    TODO: Fetch the entity data from Neo4j and return in a readable format
+    Gather all entities and their connections
+
+    :param ObjectId _id: The id of the keyword which entities are requested
     """
-    return jsonify(_id)
+    username = get_jwt_identity()
+
+    entity_limit = request.json.get('limit', NEO_CONTROLLER.MAX_32_INT)
+
+    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
+
+    results = NEO_CONTROLLER.get_keyword_entities(keyword, entity_limit=entity_limit)
+
+    results = [result.data() for result in results]
+
+    results = [{ 'keyword': result['kw']._properties, 'entity': result['en']._properties, 'mentionedWith': result['mw']._properties } for result in results]
+
+    return jsonify(results)
             
