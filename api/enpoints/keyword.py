@@ -1,15 +1,16 @@
 """
 This module holds all the endpoints associated to keyword manipulation
 """
+import json
+
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, jsonify
 from bson import json_util
 from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
 
-import json
-
-from server import MONGO_CONTROLLER, celery_app
+from server import MONGO_CONTROLLER, NEO_CONTROLLER, celery_app
+from api.helpers.verification import verify_keyword_association
 
 # Set up blueprint
 keyword_blueprint = Blueprint('keyword_endpoint', __name__)
@@ -99,4 +100,50 @@ def keyword_languages_available_route():
     """
     if request.method == "GET":
         return jsonify(SUPPORTED_LANGUAGES)
+
+@keyword_blueprint.route('/keywords/<_id>/graph/entities', methods=['GET'])
+@jwt_required
+@verify_keyword_association(id_parameter_name='_id')
+def keyword_graph_entities(_id):
+    """
+    Gather all entities of a keyword and their connections
+
+    :param ObjectId _id: The id of the keyword which entities are requested
+    """
+    username = get_jwt_identity()
+
+    entity_limit = request.json.get('limit', NEO_CONTROLLER.MAX_32_INT)
+
+    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
+
+    results = NEO_CONTROLLER.get_keyword_entities(keyword, entity_limit=entity_limit)
+
+    results = [result.data() for result in results]
+
+    results = [{ 'keyword': result['kw']._properties, 'entity': result['en']._properties, 'mentionedWith': result['mw']._properties } for result in results]
+
+    return jsonify(results)
+
+@keyword_blueprint.route('/keywords/<_id>/graph/categories', methods=['GET'])
+@jwt_required
+@verify_keyword_association(id_parameter_name='_id')
+def keyword_graph_categories(_id):
+    """
+    Gather all categories of a keyword and their connections
+
+    :param ObjectId _id: The id of the keyword which categories are requested
+    """
+    username = get_jwt_identity()
+
+    category_limit = request.json.get('limit', NEO_CONTROLLER.MAX_32_INT)
+
+    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
+
+    results = NEO_CONTROLLER.get_keyword_categories(keyword, category_limit=category_limit)
+
+    results = [result.data() for result in results]
+
+    results = [{ 'keyword': result['kw']._properties, 'category': result['ca']._properties, 'mentionedWith': result['mw']._properties } for result in results]
+
+    return jsonify(results)
             

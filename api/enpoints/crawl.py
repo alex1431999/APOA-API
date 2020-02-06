@@ -8,9 +8,9 @@ from flask import Blueprint, request, jsonify
 from server import MONGO_CONTROLLER
 
 # Set up blueprint
-crawls_enpoint = Blueprint('crawls_endpoint', __name__)
+crawl_enpoint = Blueprint('crawl_endpoint', __name__)
 
-@crawls_enpoint.route('/crawls/<keyword_id>/plotting_data', methods=['GET'])
+@crawl_enpoint.route('/crawls/<keyword_id>/plotting_data', methods=['GET'])
 @jwt_required
 def plotting_data_route(keyword_id):
     user = get_jwt_identity()
