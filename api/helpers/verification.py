@@ -33,6 +33,7 @@ def verify_keyword_association(id_parameter_name):
             # If the above did not pass then the user is not authorized
             return jsonify('You are not authorized to access this keyword'), 404
 
+        verify.__name__ = func.__name__ # https://stackoverflow.com/questions/17256602/assertionerror-view-function-mapping-is-overwriting-an-existing-endpoint-functi
         return verify
     return verify_keyword_association_inner
 
