@@ -112,7 +112,7 @@ def keyword_graph_entities(_id):
     """
     username = get_jwt_identity()
 
-    entity_limit = request.json.get('limit', NEO_CONTROLLER.MAX_32_INT)
+    entity_limit = request.args.get('limit', NEO_CONTROLLER.MAX_32_INT)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
@@ -135,7 +135,7 @@ def keyword_graph_categories(_id):
     """
     username = get_jwt_identity()
 
-    category_limit = request.json.get('limit', NEO_CONTROLLER.MAX_32_INT)
+    category_limit = request.args.get('limit', NEO_CONTROLLER.MAX_32_INT)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
