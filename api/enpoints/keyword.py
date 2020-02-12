@@ -1,5 +1,14 @@
 """
 This module holds all the endpoints associated to keyword manipulation
+
+A global Mongo Controller is used while a local individual Neo controller
+is used for each function which requires a neo controller. 
+
+The reason behind that is that Mongo can handle multiple concurrent queries
+while neo seems to struggle with multile queries sent over one connection.
+
+By giving each individual request its own controller we establish individual
+connections which prevents the connection from getting overloaded.
 """
 import json
 
@@ -8,8 +17,9 @@ from flask import Blueprint, request, jsonify
 from bson import json_util
 from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
+from common.neo4j.controller import Neo4jController
 
-from server import MONGO_CONTROLLER, NEO_CONTROLLER, celery_app
+from server import MONGO_CONTROLLER, celery_app
 from api.helpers.verification import verify_keyword_association
 
 # Set up blueprint
@@ -110,13 +120,15 @@ def keyword_graph_entities(_id):
 
     :param ObjectId _id: The id of the keyword which entities are requested
     """
+    neo_controller = Neo4jController()
+
     username = get_jwt_identity()
 
-    entity_limit = request.args.get('limit', NEO_CONTROLLER.MAX_32_INT)
+    entity_limit = request.args.get('limit', neo_controller.MAX_32_INT)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
-    results = NEO_CONTROLLER.get_keyword_entities(keyword, entity_limit=entity_limit)
+    results = neo_controller.get_keyword_entities(keyword, entity_limit=entity_limit)
 
     results = [result.data() for result in results]
 
@@ -133,13 +145,15 @@ def keyword_graph_categories(_id):
 
     :param ObjectId _id: The id of the keyword which categories are requested
     """
+    neo_controller = Neo4jController()
+
     username = get_jwt_identity()
 
-    category_limit = request.args.get('limit', NEO_CONTROLLER.MAX_32_INT)
+    category_limit = request.args.get('limit', neo_controller.MAX_32_INT)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
-    results = NEO_CONTROLLER.get_keyword_categories(keyword, category_limit=category_limit)
+    results = neo_controller.get_keyword_categories(keyword, category_limit=category_limit)
 
     results = [result.data() for result in results]
 

@@ -4,7 +4,6 @@ This module holds the basic flask setup
 import os
 
 from common.mongo.controller import MongoController
-from common.neo4j.controller import Neo4jController
 from flask_jwt_extended import JWTManager
 from celery import Celery
 from flask import Flask
@@ -12,9 +11,6 @@ from flask_cors import CORS
 
 # Construct mongo controller
 MONGO_CONTROLLER = MongoController()
-
-# Construct Neo4j controller
-NEO_CONTROLLER = Neo4jController()
 
 # Setup celery
 celery_app = Celery('server',
