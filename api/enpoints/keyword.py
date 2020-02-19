@@ -100,7 +100,25 @@ def keyword_route(_id):
         except:
             return { 'msg': 'the request encountered an error' }, 400 # Bad reqeust
 
-@keyword_blueprint.route('/keywords/languages/available', methods=["GET"])
+@keyword_blueprint.route('/keywords/<_id>/score', methods=['GET'])
+@jwt_required
+@verify_keyword_association(id_parameter_name='_id')
+def keyword_avg_score_route(_id):
+    """
+    Get the average score of a keyword
+
+    GET: avg score
+    """
+    if request.method == 'GET':
+        try:
+            avg = MONGO_CONTROLLER.get_crawls_average_score(_id)
+
+            return jsonify(avg)
+        except:
+            return { 'msg': 'the request encountered an error' }, 400 # Bad reqeust
+
+
+@keyword_blueprint.route('/keywords/languages/available', methods=['GET'])
 @jwt_required
 def keyword_languages_available_route():
     """
@@ -108,7 +126,7 @@ def keyword_languages_available_route():
 
     GET: supported languages
     """
-    if request.method == "GET":
+    if request.method == 'GET':
         return jsonify(SUPPORTED_LANGUAGES)
 
 @keyword_blueprint.route('/keywords/<_id>/graph/entities', methods=['GET'])
