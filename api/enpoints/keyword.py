@@ -63,6 +63,8 @@ def keywords_route():
 
             if keyword_string and language:
                 celery_app.send_task('crawl-twitter-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['twitter'])
+                celery_app.send_task('crawl-news-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['news'])
+                celery_app.send_task('crawl-nyt-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['nyt'])
 
             return { 'msg': 'keyword successfully added' }, 200 # Successful
         except:
