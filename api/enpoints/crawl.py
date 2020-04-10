@@ -24,7 +24,6 @@ def plotting_data_route(keyword_id):
 
     if request.method == 'GET':
         try:
-            print(keyword_id)
             plotting_data = MONGO_CONTROLLER.get_crawls_plotting_data(keyword_id)
             return jsonify(plotting_data)
         except:
