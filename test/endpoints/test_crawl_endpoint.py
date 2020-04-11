@@ -8,8 +8,14 @@ from datetime import datetime
 from test.base_test import BaseTest
 
 class Test(BaseTest):
+    def setUp(self):
+        super().setUp()
+
+        # Register all users for these tests
+        self.register_users()
+
     def send_request(self, keyword_id, user):
-        access_token = create_access_token(user['name'])
+        access_token = create_access_token(user['username'])
         headers = { 'Authorization': f'Bearer {access_token}' }
 
         return self.tester.get(f'/crawls/{keyword_id}/plotting_data', headers=headers)
