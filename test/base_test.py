@@ -17,7 +17,7 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         # Mongo
-        self.mongo_controller = MongoController(db_name='fyp_api_test')
+        self.mongo_controller = MongoController()
 
         # context setup
         self.app_context = app.app_context()
