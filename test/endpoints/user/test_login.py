@@ -1,5 +1,5 @@
 """
-This file holds all user endpoint tests
+This file holds all login endpoint tests
 """
 from test.base_test import BaseTest
 

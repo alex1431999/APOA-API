@@ -1,5 +1,5 @@
 """
-This file holds all crawl endpoint tests
+This file holds all tests for the get_plotting_data endpoint
 """
 from flask_jwt_extended import create_access_token
 from bson import ObjectId

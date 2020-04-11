@@ -1,5 +1,5 @@
 """
-This file holds all user endpoint tests
+This file holds all protect endpoint tests
 """
 from flask_jwt_extended import create_access_token
 
