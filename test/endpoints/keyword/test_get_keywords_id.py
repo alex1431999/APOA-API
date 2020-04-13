@@ -1,5 +1,5 @@
 """
-This file includes all tests for the get_keywords endpoint
+This file includes all tests for the get keyword by id endpoint
 """
 from flask_jwt_extended import create_access_token
 from bson import ObjectId
