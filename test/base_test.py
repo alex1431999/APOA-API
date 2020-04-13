@@ -7,6 +7,7 @@ import os
 
 from common.mongo.controller import MongoController
 from common.config import SUPPORTED_LANGUAGES
+from datetime import datetime
 
 from server import app
 
@@ -14,6 +15,9 @@ class BaseTest(unittest.TestCase):
     # Users
     user_1 = { 'username': 'user_1', 'password': 'test' }
     user_2 = { 'username': 'user_2', 'password': 'test' }
+
+    # Crawls:News
+    crawl_news_1 = { 'author': 'test', 'title': 'some title', 'text': 'some text', 'timestamp': datetime.now() }
 
     def setUp(self):
         # Mongo
@@ -38,6 +42,22 @@ class BaseTest(unittest.TestCase):
         language = SUPPORTED_LANGUAGES[0]
 
         self.mongo_controller.add_keyword(keyword_string, language, user['username'])
-        keyword_id = self.mongo_controller.get_keyword(keyword_string, language)['_id']
+        keyword = self.mongo_controller.get_keyword(keyword_string, language)
 
-        return keyword_id
+        return keyword['_id']
+
+    def load_crawl_fixture(self, keyword_id):
+        self.mongo_controller.add_crawl_news(
+            keyword_id,
+            self.crawl_news_1['author'],
+            self.crawl_news_1['title'],
+            self.crawl_news_1['text'],
+            self.crawl_news_1['timestamp'],
+        )
+
+        crawl = self.mongo_controller.get_crawl_news(
+            self.crawl_news_1['author'],
+            self.crawl_news_1['title'],
+        )
+
+        return crawl['_id']
