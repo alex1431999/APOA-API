@@ -26,7 +26,7 @@ variables:
   # Neo4j, these variables are picked up by the common library
   NEO_URI: "bolt://neo4j:7687"
   NEO_USER: "neo4j"
-  NEO_PASSWORD: "neo4j"
+  NEO_PASSWORD: "root"
 
 before_script:
   - python --version
