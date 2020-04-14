@@ -20,18 +20,9 @@ class BaseTest(unittest.TestCase):
     # Crawls:News
     crawl_news_1 = { 'author': 'test', 'title': 'some title', 'text': 'some text', 'timestamp': datetime.now() }
 
-    # Entities
-    entity_1 = { 'entity_string': 'my entity', 'language': 'en', 'score': 0.6, 'count': 12 }
-
-    # Categories
-    category_1 = { 'category_string': 'my category', 'language': 'en', 'confidence': 0.6, 'count': 12 }
-
     def setUp(self):
         # Mongo
         self.mongo_controller = MongoController()
-
-        # Neo4j
-        self.neo_controller = Neo4jController()
 
         # context setup
         self.app_context = app.app_context()
@@ -71,33 +62,3 @@ class BaseTest(unittest.TestCase):
         )
 
         return crawl['_id']
-
-    def load_entity_fixture(self, keyword_id):
-        keyword = self.mongo_controller.get_keyword_by_id(keyword_id, cast=True)
-
-        self.neo_controller.add_keyword(keyword)
-        self.neo_controller.add_entity(
-            self.entity_1['entity_string'],
-            self.entity_1['language'],
-            self.entity_1['score'],
-            self.entity_1['count'],
-            keyword_id,
-        )
-
-        entities = self.neo_controller.get_keyword_entities(keyword)
-        return entities
-
-    def load_category_fixture(self, keyword_id):
-        keyword = self.mongo_controller.get_keyword_by_id(keyword_id, cast=True)
-
-        self.neo_controller.add_keyword(keyword)
-        self.neo_controller.add_category(
-            self.category_1['category_string'],
-            self.category_1['language'],
-            self.category_1['confidence'],
-            self.category_1['count'],
-            keyword_id,
-        )
-
-        categories = self.neo_controller.get_keyword_categories(keyword)
-        return categories
