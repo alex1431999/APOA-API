@@ -23,6 +23,9 @@ class BaseTest(unittest.TestCase):
     # Entities
     entity_1 = { 'entity_string': 'my entity', 'language': 'en', 'score': 0.6, 'count': 12 }
 
+    # Categories
+    category_1 = { 'category_string': 'my category', 'language': 'en', 'confidence': 0.6, 'count': 12 }
+
     def setUp(self):
         # Mongo
         self.mongo_controller = MongoController()
@@ -83,3 +86,18 @@ class BaseTest(unittest.TestCase):
 
         entities = self.neo_controller.get_keyword_entities(keyword)
         return entities
+
+    def load_category_fixture(self, keyword_id):
+        keyword = self.mongo_controller.get_keyword_by_id(keyword_id, cast=True)
+
+        self.neo_controller.add_keyword(keyword)
+        self.neo_controller.add_category(
+            self.category_1['category_string'],
+            self.category_1['language'],
+            self.category_1['confidence'],
+            self.category_1['count'],
+            keyword_id,
+        )
+
+        categories = self.neo_controller.get_keyword_categories(keyword)
+        return categories
