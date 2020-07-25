@@ -15,7 +15,7 @@ secrets/
 log_*.txt
 
 # Scripts
-*.local.sh
+*.sh
 
 # Env
 .vscode
