@@ -1,7 +1,9 @@
 #!/bin/bash
 
 python --version
-# install pip
+# Install pip
+add-apt-repository universe
+apt update
 apt install python3-pip
 # install ssh-agent
 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
