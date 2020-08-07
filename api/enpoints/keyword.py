@@ -59,14 +59,14 @@ def keywords_route():
         language = request.json.get('language', None)
 
         try:
-            MONGO_CONTROLLER.add_keyword(keyword_string, language, username)
+            keyword = MONGO_CONTROLLER.add_keyword(keyword_string, language, username, return_object=True)
 
             if keyword_string and language:
                 celery_app.send_task('crawl-twitter-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['twitter'])
                 celery_app.send_task('crawl-news-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['news'])
                 celery_app.send_task('crawl-nyt-keyword', kwargs={'keyword_string': keyword_string, 'language': language}, queue=queues['nyt'])
 
-            return { 'msg': 'keyword successfully added' }, 200 # Successful
+            return json_util.dumps(keyword), 200 # Successful
         except:
             return { 'msg': 'the request encountered an error' }, 400 # Bad request
 
