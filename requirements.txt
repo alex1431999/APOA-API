@@ -3,6 +3,7 @@ Click==7.0
 cryptography==2.8
 Flask==1.1.1
 Flask-JWT-Extended==3.24.1
+gunicorn==19.9.0
 itsdangerous==1.1.0
 Jinja2==2.10.3
 MarkupSafe==1.1.1
@@ -14,4 +15,4 @@ six==1.13.0
 Werkzeug==0.16.0
 Flask-Cors==3.0.8
 celery==4.4.0
-git+ssh://git@gitlab.com/alex1431999/final-year-project-common.git
+git+https://gitlab+deploy-token-203703:X6gBxSpxzjVsybbhL9hi@gitlab.com/apoax/APOAX-Common.git
