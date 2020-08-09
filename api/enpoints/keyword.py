@@ -1,23 +1,17 @@
 """
 This module holds all the endpoints associated to keyword manipulation
 
-A global Mongo Controller is used while a local individual Neo controller
-is used for each function which requires a neo controller. 
-
-The reason behind that is that Mongo can handle multiple concurrent queries
-while neo seems to struggle with multile queries sent over one connection.
-
 By giving each individual request its own controller we establish individual
 connections which prevents the connection from getting overloaded.
 """
 import json
+import sys
 
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, jsonify
 from bson import json_util
 from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
-from common.neo4j.controller import Neo4jController
 
 from server import MONGO_CONTROLLER, celery_app
 from api.helpers.verification import verify_keyword_association
@@ -139,21 +133,15 @@ def keyword_graph_entities(_id):
 
     :param ObjectId _id: The id of the keyword which entities are requested
     """
-    neo_controller = Neo4jController()
-
     username = get_jwt_identity()
 
-    entity_limit = request.args.get('limit', neo_controller.MAX_32_INT)
+    limit = request.args.get('limit', sys.maxsize)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
-    results = neo_controller.get_keyword_entities(keyword, entity_limit=entity_limit)
+    entities = MONGO_CONTROLLER.get_entities(keyword._id, int(limit))
 
-    results = [result.data() for result in results]
-
-    results = [{ 'keyword': result['kw']._properties, 'entity': result['en']._properties, 'mentionedWith': result['mw']._properties } for result in results]
-
-    return jsonify(results)
+    return jsonify(entities)
 
 @keyword_blueprint.route('/keywords/<_id>/graph/categories', methods=['GET'])
 @jwt_required
@@ -164,21 +152,15 @@ def keyword_graph_categories(_id):
 
     :param ObjectId _id: The id of the keyword which categories are requested
     """
-    neo_controller = Neo4jController()
-
     username = get_jwt_identity()
 
-    category_limit = request.args.get('limit', neo_controller.MAX_32_INT)
+    limit = request.args.get('limit', sys.maxsize)
 
     keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
 
-    results = neo_controller.get_keyword_categories(keyword, category_limit=category_limit)
+    categories = MONGO_CONTROLLER.get_categories(keyword._id, int(limit))
 
-    results = [result.data() for result in results]
-
-    results = [{ 'keyword': result['kw']._properties, 'category': result['ca']._properties, 'mentionedWith': result['mw']._properties } for result in results]
-
-    return jsonify(results)
+    return jsonify(categories)
             
 
 @keyword_blueprint.route('/keywords/<_id>/snippets', methods=['GET'])

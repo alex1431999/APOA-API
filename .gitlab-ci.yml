@@ -3,7 +3,6 @@ image: "python:3.7"
 services:
   - mongo:latest
   - rabbitmq:latest
-  - neo4j:3.5.12-enterprise
 
 variables:
   PYTHON_ENV: "DEVELOPMENT"
@@ -22,12 +21,6 @@ variables:
   # Mongo, these variables are picked up by the common library
   MONGO_URL: 'mongodb://mongo:27017'
   MONGO_DATABASE_NAME: 'default_db'
-  
-  # Neo4j, these variables are picked up by the common library
-  NEO_URI: "bolt://neo4j:7687"
-  NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
-  NEO_USER: "neo4j"
-  NEO_PASSWORD: "neo4j"
 
 before_script:
   - python --version

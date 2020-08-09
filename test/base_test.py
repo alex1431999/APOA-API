@@ -6,7 +6,6 @@ import unittest
 import os
 
 from common.mongo.controller import MongoController
-from common.neo4j.controller import Neo4jController
 from common.config import SUPPORTED_LANGUAGES
 from datetime import datetime
 
