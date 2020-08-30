@@ -169,3 +169,13 @@ def keyword_graph_categories(_id):
 def keyword_snippets(_id):
     snippets = MONGO_CONTROLLER.get_crawls_texts(_id)
     return jsonify(snippets)
+
+
+@keyword_blueprint.route('/keywords/public', methods=['GET'])
+def keywords_public_endpoint():
+    keywords = MONGO_CONTROLLER.get_keywords_public()
+
+    for keyword in keywords:
+        del keyword['users']
+
+    return json_util.dumps(keywords)
