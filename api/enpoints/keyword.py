@@ -7,14 +7,14 @@ connections which prevents the connection from getting overloaded.
 import json
 import sys
 
-from flask_jwt_extended import get_jwt_identity, jwt_required
-from flask import Blueprint, request, jsonify
 from bson import json_util
 from common.celery import queues
 from common.config import SUPPORTED_LANGUAGES
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from server import MONGO_CONTROLLER, celery_app
 from api.helpers.verification import verify_keyword_association
+from server import MONGO_CONTROLLER, celery_app
 
 # Set up blueprint
 keyword_blueprint = Blueprint("keyword_endpoint", __name__)
@@ -104,10 +104,6 @@ def keyword_route(_id):
     if request.method == "GET":
         try:
             keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username)
-
-            # You don't want to publish any information about other users
-            del keyword["users"]
-
             return json_util.dumps(keyword)  # Successful
         except:
             return {"msg": "the request encountered an error"}, 400  # Bad reqeust
@@ -193,8 +189,4 @@ def keyword_snippets(_id):
 @keyword_blueprint.route("/keywords/public", methods=["GET"])
 def keywords_public_endpoint():
     keywords = MONGO_CONTROLLER.get_keywords_public()
-
-    for keyword in keywords:
-        del keyword["users"]
-
     return json_util.dumps(keywords)

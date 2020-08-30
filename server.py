@@ -3,11 +3,13 @@ This module holds the basic flask setup
 """
 import os
 
-from common.mongo.controller import MongoController
-from flask_jwt_extended import JWTManager
 from celery import Celery
+from common.mongo.controller import MongoController
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
+from api.hooks import enable_hooks
 
 # Construct mongo controller
 MONGO_CONTROLLER = MongoController()
@@ -34,3 +36,5 @@ jwt = JWTManager(app)
 app.register_blueprint(keyword_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(crawl_enpoint)
+
+enable_hooks(app)
