@@ -32,11 +32,6 @@ export JWT_SECRET_KEY="" # Insert your secret key here
 export MONGO_URL='mongodb://localhost:27017'
 export MONGO_DATABASE_NAME='default_db'
 
-# Neo4j, these variables are picked up by the common library
-export NEO_URI='bolt://localhost:7687'
-export NEO_USER='neo4j'
-export NEO_PASSWORD='root'
-
 # Run server
 flask run
 ```

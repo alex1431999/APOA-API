@@ -6,15 +6,18 @@ from bson import ObjectId
 
 from test.base_test import BaseTest
 
+
 class Test(BaseTest):
     def setUp(self):
         super().setUp()
         self.register_users()
 
     def send_request(self, user, _id):
-        access_token = create_access_token(user['username'])
-        headers = { 'Authorization': f'Bearer {access_token}' }
-        response = self.tester.get(f'/keywords/{str(_id)}/graph/entities', headers=headers)
+        access_token = create_access_token(user["username"])
+        headers = {"Authorization": f"Bearer {access_token}"}
+        response = self.tester.get(
+            f"/keywords/{str(_id)}/graph/entities", headers=headers
+        )
 
         return response
 
@@ -23,4 +26,4 @@ class Test(BaseTest):
 
         response = self.send_request(self.user_1, random_id)
 
-        self.assertEqual(response.status_code, 404, 'Should have not been authorized')
+        self.assertEqual(response.status_code, 404, "Should have not been authorized")
