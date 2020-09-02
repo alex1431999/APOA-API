@@ -12,7 +12,10 @@ def enable_hooks(app):
         """
         Remove sensitive user data from the response data
         """
-        data = json.loads(response.data)
+        try:
+            data = json.loads(response.data)
+        except:
+            return response
 
         data = remove_sensitive_data(data)
 
