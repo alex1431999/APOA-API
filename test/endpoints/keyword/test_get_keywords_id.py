@@ -24,7 +24,7 @@ class Test(BaseTest):
 
         response = self.send_request(self.user_1, random_id)
 
-        self.assertEqual(response.status_code, 400, "Should have not been authorized")
+        self.assertEqual(response.status_code, 401, "Should have not been authorized")
 
     def test_get_keywords_id_authorized(self):
         keyword_id = self.load_keyword_fixture(self.user_1)

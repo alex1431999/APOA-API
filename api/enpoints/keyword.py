@@ -104,6 +104,10 @@ def keyword_route(_id):
     if request.method == "GET":
         try:
             keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username)
+
+            if not keyword:
+                return {"msg": "You are not authorized to access this keyword"}, 401  # Not authorized
+
             return json_util.dumps(keyword)  # Successful
         except:
             return {"msg": "the request encountered an error"}, 400  # Bad reqeust
