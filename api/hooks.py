@@ -19,6 +19,14 @@ def enable_hooks(app):
         response.data = json.dumps(data)
         return response
 
+    @app.after_request
+    def allow_cors(response: Response):
+        """
+        Allow access from anywhere
+        """
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        return response
+
 
 def remove_sensitive_data(data: any) -> any:
     """
