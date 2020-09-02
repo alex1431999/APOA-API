@@ -19,3 +19,6 @@ log_*.txt
 
 # Env
 .vscode
+
+# Editor
+.idea
