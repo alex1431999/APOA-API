@@ -24,6 +24,7 @@ from api.enpoints.crawl import crawl_enpoint
 app = Flask(__name__)
 
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Set JWT secret key
 JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
