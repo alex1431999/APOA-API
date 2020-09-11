@@ -3,6 +3,7 @@ This file defines all the hooks used in the flask api
 """
 import json
 
+from bson import json_util
 from flask import Response
 
 
@@ -19,7 +20,7 @@ def enable_hooks(app):
 
         data = remove_sensitive_data(data)
 
-        response.data = json.dumps(data)
+        response.data = json_util.dumps(data)
         return response
 
     @app.after_request
