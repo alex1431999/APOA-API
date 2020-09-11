@@ -9,7 +9,7 @@ from flask import Response
 
 def enable_hooks(app):
     @app.after_request
-    def delete_user_sensitive_data(response: Response):
+    def delete_user_sensitive_data(response: Response) -> Response:
         """
         Remove sensitive user data from the response data
         """
@@ -24,11 +24,12 @@ def enable_hooks(app):
         return response
 
     @app.after_request
-    def allow_cors(response: Response):
+    def allow_cors(response: Response) -> Response:
         """
         Allow access from anywhere
         """
         response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
         return response
 
 
