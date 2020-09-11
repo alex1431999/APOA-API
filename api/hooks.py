@@ -20,7 +20,7 @@ def enable_hooks(app):
 
         data = remove_sensitive_data(data)
 
-        response.data = json_util.dumps(data)
+        response.data = f"{json.dumps(data)}\n"
         return response
 
     @app.after_request
