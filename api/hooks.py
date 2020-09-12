@@ -51,6 +51,7 @@ def delete_user_sensitive_data_element(element: dict) -> dict:
     Define all the fields that classify as user sensitive data
     """
     element = remove_field_save(element, "users")
+    element = remove_field_save(element, "deleted")
     return element
 
 
