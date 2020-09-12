@@ -81,6 +81,7 @@ def keywords_route():
 
 
 @keyword_blueprint.route("/keywords/<_id>", methods=["GET", "DELETE"])
+@verify_keyword_association(id_parameter_name="_id")
 @jwt_required
 def keyword_route(_id):
     """
@@ -103,10 +104,9 @@ def keyword_route(_id):
     # Get specific keyword
     if request.method == "GET":
         try:
-            keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username)
-
-            if not keyword:
-                return {"msg": "You are not authorized to access this keyword"}, 401  # Not authorized
+            # We don't need to verify that the user is authorized to access the keyword
+            # the verify_keyword_association decorator handles that
+            keyword = MONGO_CONTROLLER.get_keyword_by_id(_id)
 
             return json_util.dumps(keyword)  # Successful
         except:
