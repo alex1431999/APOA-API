@@ -3,7 +3,6 @@ This file defines all the hooks used in the flask api
 """
 import json
 
-from bson import json_util
 from flask import Response
 
 
