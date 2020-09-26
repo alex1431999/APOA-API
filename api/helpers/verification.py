@@ -33,7 +33,9 @@ def verify_keyword_association(id_parameter_name):
 
                 # This is an edge case, we don't combine the if statements because these are mongo calls that take time
                 keywords_public = MONGO_CONTROLLER.get_keywords_public()
-                keywords_public_ids = [str(keyword["_id"]) for keyword in keywords_public]
+                keywords_public_ids = [
+                    str(keyword["_id"]) for keyword in keywords_public
+                ]
 
                 if _id in keywords_public_ids:
                     return func(*args, **kwargs)

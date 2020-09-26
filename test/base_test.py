@@ -62,8 +62,7 @@ class BaseTest(unittest.TestCase):
         )
 
         crawl = self.mongo_controller.get_crawl_news(
-            self.crawl_news_1["author"],
-            self.crawl_news_1["title"],
+            self.crawl_news_1["author"], self.crawl_news_1["title"],
         )
 
         return crawl["_id"]

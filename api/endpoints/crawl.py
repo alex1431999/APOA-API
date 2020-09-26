@@ -21,9 +21,10 @@ def plotting_data_route(keyword_id):
         keyword = MONGO_CONTROLLER.get_keyword_by_id(keyword_id, user, cast=True)
         assert user in keyword.users
     except:
-        return {
-            "msg": "the user is not authorized to view this data"
-        }, 401  # Not authorized
+        return (
+            {"msg": "the user is not authorized to view this data"},
+            401,
+        )  # Not authorized
 
     if request.method == "GET":
         try:

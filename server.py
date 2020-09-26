@@ -25,7 +25,7 @@ from api.endpoints.static import static_endpoint
 app = Flask(__name__, static_url_path="")
 
 CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config["CORS_HEADERS"] = "Content-Type"
 
 # Set JWT secret key
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
