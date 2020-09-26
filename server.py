@@ -17,11 +17,12 @@ MONGO_CONTROLLER = MongoController()
 # Setup celery
 celery_app = Celery("server", broker=os.environ["BROKER_URL"])
 
-from api.enpoints.keyword import keyword_blueprint
-from api.enpoints.user import user_blueprint
-from api.enpoints.crawl import crawl_enpoint
+from api.endpoints.keyword import keyword_blueprint
+from api.endpoints.user import user_blueprint
+from api.endpoints.crawl import crawl_enpoint
+from api.endpoints.static import static_endpoint
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="")
 
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -37,5 +38,6 @@ jwt = JWTManager(app)
 app.register_blueprint(keyword_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(crawl_enpoint)
+app.register_blueprint(static_endpoint)
 
 enable_hooks(app)
