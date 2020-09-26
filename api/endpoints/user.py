@@ -6,7 +6,6 @@ Athentication
 from flask import request, Blueprint, jsonify
 
 from flask_jwt_extended import (
-    JWTManager,
     jwt_required,
     create_access_token,
     jwt_refresh_token_required,
