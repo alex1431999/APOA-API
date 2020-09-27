@@ -29,7 +29,7 @@ def verify_keyword_association(id_parameter_name):
 
                 # Check if the keyword is associated directly
                 keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, cast=True)
-                if username in keyword.users:
+                if keyword and username in keyword.users:
                     return func(*args, **kwargs)
 
                 # Check if the keyword is associated indirectly by index
