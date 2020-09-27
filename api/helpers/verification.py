@@ -27,8 +27,18 @@ def verify_keyword_association(id_parameter_name):
             if id_parameter_name in kwargs:  # Make sure the dict actually has this key
                 _id = kwargs[id_parameter_name]
 
-                keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username)
-                if keyword:
+                # Check if the keyword is associated directly
+                keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, cast=True)
+                if username in keyword.users:
+                    return func(*args, **kwargs)
+
+                # Check if the keyword is associated indirectly by index
+                indexes = [MONGO_CONTROLLER.get_index_by_id(_id, cast=True) for _id in keyword.indexes]
+                indexes_users = []
+                for index in indexes:
+                    indexes_users += index.users
+
+                if username in indexes_users:
                     return func(*args, **kwargs)
 
                 # This is an edge case, we don't combine the if statements because these are mongo calls that take time
