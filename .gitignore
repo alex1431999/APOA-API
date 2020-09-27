@@ -14,9 +14,6 @@ secrets/
 # Logs
 log_*.txt
 
-# Scripts
-*.sh
-
 # Env
 .vscode
 
