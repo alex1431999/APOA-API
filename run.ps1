@@ -17,10 +17,5 @@ $env:JWT_SECRET_KEY="2jWcgoFw8SRVi0rJ10ns5vcWVi5tKHe3L+NoFutg2SrdHFjpV4lUskvQq84
 $env:MONGO_URL='mongodb://localhost:27017'
 $env:MONGO_DATABASE_NAME='default_db'
 
-# Neo4j, these variables are picked up by the common library
-$env:NEO_URI='bolt://localhost:7687'
-$env:NEO_USER='neo4j'
-$env:NEO_PASSWORD='root'
-
 # Run server
 flask run
