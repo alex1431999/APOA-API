@@ -52,6 +52,7 @@ def delete_user_sensitive_data_element(element: dict) -> dict:
     """
     element = remove_field_save(element, "users")
     element = remove_field_save(element, "deleted")
+    element = remove_field_save(element, "indexes")
     return element
 
 
