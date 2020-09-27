@@ -19,3 +19,8 @@ log_*.txt
 
 # Editor
 .idea
+
+# Local scripts
+*.local.sh
+*.local.ps1
+*.local.bash
