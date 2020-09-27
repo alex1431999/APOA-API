@@ -155,7 +155,7 @@ def keyword_graph_entities(_id):
 
     limit = request.args.get("limit", sys.maxsize)
 
-    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
+    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, cast=True)
 
     entities = MONGO_CONTROLLER.get_entities(keyword._id, int(limit))
 
@@ -175,7 +175,7 @@ def keyword_graph_categories(_id):
 
     limit = request.args.get("limit", sys.maxsize)
 
-    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, username=username, cast=True)
+    keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, cast=True)
 
     categories = MONGO_CONTROLLER.get_categories(keyword._id, int(limit))
 
