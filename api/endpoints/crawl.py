@@ -8,10 +8,10 @@ from api.helpers.verification import verify_keyword_association
 from server import MONGO_CONTROLLER
 
 # Set up blueprint
-crawl_enpoint = Blueprint("crawl_endpoint", __name__)
+crawl_blueprint = Blueprint("crawl_endpoint", __name__)
 
 
-@crawl_enpoint.route("/crawls/<keyword_id>/plotting_data", methods=["GET"])
+@crawl_blueprint.route("/crawls/<keyword_id>/plotting_data", methods=["GET"])
 @verify_keyword_association(id_parameter_name="keyword_id")
 def plotting_data_route(keyword_id):
     if request.method == "GET":

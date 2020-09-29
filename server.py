@@ -19,8 +19,8 @@ celery_app = Celery("server", broker=os.environ["BROKER_URL"])
 
 from api.endpoints.keyword import keyword_blueprint
 from api.endpoints.user import user_blueprint
-from api.endpoints.crawl import crawl_enpoint
-from api.endpoints.static import static_endpoint
+from api.endpoints.crawl import crawl_blueprint
+from api.endpoints.static import static_blueprint
 
 app = Flask(__name__, static_url_path="")
 
@@ -37,7 +37,7 @@ jwt = JWTManager(app)
 # Register blueprints
 app.register_blueprint(keyword_blueprint)
 app.register_blueprint(user_blueprint)
-app.register_blueprint(crawl_enpoint)
-app.register_blueprint(static_endpoint)
+app.register_blueprint(crawl_blueprint)
+app.register_blueprint(static_blueprint)
 
 enable_hooks(app)
