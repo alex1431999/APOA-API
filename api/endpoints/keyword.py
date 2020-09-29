@@ -82,7 +82,6 @@ def keywords_route():
 
 @keyword_blueprint.route("/keywords/<_id>", methods=["GET", "DELETE"])
 @verify_keyword_association(id_parameter_name="_id")
-@jwt_required
 def keyword_route(_id):
     """
     Hanlde all requests on /keywords/<_id>
@@ -114,7 +113,6 @@ def keyword_route(_id):
 
 
 @keyword_blueprint.route("/keywords/<_id>/score", methods=["GET"])
-@jwt_required
 @verify_keyword_association(id_parameter_name="_id")
 def keyword_avg_score_route(_id):
     """
@@ -143,7 +141,6 @@ def keyword_languages_available_route():
 
 
 @keyword_blueprint.route("/keywords/<_id>/graph/entities", methods=["GET"])
-@jwt_required
 @verify_keyword_association(id_parameter_name="_id")
 def keyword_graph_entities(_id):
     """
@@ -163,7 +160,6 @@ def keyword_graph_entities(_id):
 
 
 @keyword_blueprint.route("/keywords/<_id>/graph/categories", methods=["GET"])
-@jwt_required
 @verify_keyword_association(id_parameter_name="_id")
 def keyword_graph_categories(_id):
     """
@@ -183,7 +179,6 @@ def keyword_graph_categories(_id):
 
 
 @keyword_blueprint.route("/keywords/<_id>/snippets", methods=["GET"])
-@jwt_required
 @verify_keyword_association(id_parameter_name="_id")
 def keyword_snippets(_id):
     snippets = MONGO_CONTROLLER.get_crawls_texts(_id)

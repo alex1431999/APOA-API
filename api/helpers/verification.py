@@ -1,7 +1,7 @@
 """
 This module handles custom verification methods unrelated to JWT
 """
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_optional
 
 from server import MONGO_CONTROLLER
 
@@ -20,9 +20,10 @@ def verify_keyword_association(id_parameter_name):
         :param func func: The function which holds the to be verified parameters
         """
 
-        @jwt_required
+        @jwt_optional
         def verify(*args, **kwargs):
             username = get_jwt_identity()
+            print(username)
 
             if id_parameter_name in kwargs:  # Make sure the dict actually has this key
                 _id = kwargs[id_parameter_name]
