@@ -31,13 +31,19 @@ def verify_keyword_association(id_parameter_name):
                 # Check if the keyword is associated directly
                 keyword = MONGO_CONTROLLER.get_keyword_by_id(_id, cast=True)
                 if not keyword:
-                    return {"msg": "The keyword you are trying to access does not exist"}, 404
+                    return (
+                        {"msg": "The keyword you are trying to access does not exist"},
+                        404,
+                    )
 
                 if username in keyword.users:
                     return func(*args, **kwargs)
 
                 # Check if the keyword is associated indirectly by index
-                indexes = [MONGO_CONTROLLER.get_index_by_id(_id, cast=True) for _id in keyword.indexes]
+                indexes = [
+                    MONGO_CONTROLLER.get_index_by_id(_id, cast=True)
+                    for _id in keyword.indexes
+                ]
                 indexes_users = []
                 for index in indexes:
                     if index:
